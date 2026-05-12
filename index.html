@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biblioteca Operacional BR</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>Biblioteca Operacional BR</strong>
+      </div>
+
+      <nav class="menu" aria-label="Categorias">
+        <button class="menu-item active" data-category="Todos">Todos</button>
+        <button class="menu-item" data-category="Governança">Governança</button>
+        <button class="menu-item" data-category="Atendimento">Atendimento</button>
+        <button class="menu-item" data-category="Comercial">Comercial</button>
+        <button class="menu-item" data-category="Financeiro">Financeiro</button>
+        <button class="menu-item" data-category="Contratos">Contratos</button>
+        <button class="menu-item" data-category="Formação">Formação</button>
+        <button class="menu-item" data-category="Comunicação institucional">Comunicação institucional</button>
+        <button class="menu-item" data-category="Pilates é Osso">Pilates é Osso</button>
+        <button class="menu-item" data-category="Modelos prontos">Modelos prontos</button>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <div class="hero-top">
+          <div class="hero-text">
+          <p class="eyebrow">Consulta orientadora interna</p>
+          <h1>Biblioteca Operacional BR</h1>
+          <p class="hero-copy">
+            Pesquise situações do dia a dia e consulte orientações institucionais para atendimento, operação e comunicação do Estúdio BR Autêntico Pilates.
+          </p>
+          </div>
+        </div>
+
+        <div class="header-tools">
+          <div class="search-box">
+            <label for="searchInput">Consultar orientação interna</label>
+            <input type="search" id="searchInput" placeholder="Digite uma dúvida, palavra-chave ou situação. Ex: cliente quer repor feriado">
+          </div>
+        </div>
+      </section>
+
+      <section class="guidance-results" id="guidanceResults" aria-live="polite"></section>
+
+      <section class="toolbar" aria-live="polite">
+        <p><span id="resultCount">0</span> orientações cadastradas</p>
+        <span id="activeCategory">Todos</span>
+      </section>
+
+      <section class="cards-grid" id="cardsGrid" aria-label="Orientações internas"></section>
+    </main>
+  </div>
+
+  <div class="modal hidden" id="documentModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-content">
+      <button class="close-button" id="closeModal" type="button" aria-label="Fechar">x</button>
+      <div class="modal-header">
+        <span class="card-category" id="modalCategory"></span>
+        <h2 id="modalTitle"></h2>
+        <p id="modalSummary"></p>
+      </div>
+
+      <div class="modal-body" id="modalBody"></div>
+
+      <div class="modal-actions">
+        <button class="copy-button" id="copyResponse" type="button">Copiar resposta</button>
+        <button class="copy-button" id="copyGuidance" type="button">Copiar orientação completa</button>
+        <button class="pdf-button" id="openPdf" type="button">Abrir documento original</button>
+        <button class="secondary-button" id="closeModalFooter" type="button">Fechar</button>
+        <span class="copy-status" id="copyStatus" aria-live="polite"></span>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
