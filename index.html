@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body style="display: none;">
+<body>
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand">
@@ -98,12 +98,12 @@
         return;
       }
 
-      document.body.style.display = "block";
+      const script = document.createElement("script");
+      script.src = "script.js";
+      document.body.appendChild(script);
     }
 
     protegerPagina();
   </script>
-
-  <script src="script.js"></script>
 </body>
 </html>
