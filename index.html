@@ -78,9 +78,8 @@
     </div>
   </div>
   <script src="supabase-config.js"></script>
-<script src="script.js"></script>
-  <script src="supabase-config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
   const supabaseClientAuth = supabase.createClient(
     window.BIBLIOTECA_BR_SUPABASE.url,
@@ -92,10 +91,13 @@
 
     if (!data.session) {
       window.location.href = "login.html";
+      return;
     }
   }
 
   protegerPagina();
 </script>
+
+<script src="script.js"></script>
 </body>
 </html>
