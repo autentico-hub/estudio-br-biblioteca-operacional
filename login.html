@@ -1,1 +1,64 @@
-file:///C:/Users/User/Documents/Codex/2026-05-05/crie-uma-aplica-o-simples-em/index.html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | Biblioteca Operacional BR</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="login-page">
+    <section class="login-card">
+      <h1>Biblioteca Operacional BR</h1>
+      <p>Acesso interno</p>
+
+      <form id="loginForm">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" placeholder="Digite seu e-mail" required />
+
+        <label for="password">Senha</label>
+        <input type="password" id="password" placeholder="Digite sua senha" required />
+
+        <button type="submit">Entrar</button>
+      </form>
+
+      <p id="loginMessage"></p>
+
+      <a href="index.html">Voltar para a busca</a>
+    </section>
+  </main>
+
+  <script src="supabase-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const supabaseClient = supabase.createClient(
+      window.BIBLIOTECA_BR_SUPABASE.url,
+      window.BIBLIOTECA_BR_SUPABASE.anonKey
+    );
+
+    const loginForm = document.getElementById("loginForm");
+    const loginMessage = document.getElementById("loginMessage");
+
+    loginForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      loginMessage.textContent = "Entrando...";
+
+      const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+      if (error) {
+        loginMessage.textContent = "Não foi possível entrar. Verifique e-mail e senha.";
+        return;
+      }
+
+      window.location.href = "admin.html";
+    });
+  </script>
+</body>
+</html>
