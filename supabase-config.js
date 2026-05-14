@@ -1,4 +1,4 @@
 window.BIBLIOTECA_BR_SUPABASE = {
   url: "https://eoxrrpcdpblwzyoejrmp.supabase.co",
-  anonKey: "sb_publishable_lK2SwAux_rOisMksPCPYaQ_oJaMZNYf"
+  anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indka3JqbWlsbnd6cHFocHRtanVhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3ODg1NTcsImV4cCI6MjA5NDM2NDU1N30.xG5jH1KTUyLFnmWOTv6Ho44_iIFbNe4aCdnQ29gzM6o"
 };
