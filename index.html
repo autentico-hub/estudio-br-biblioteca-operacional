@@ -99,5 +99,31 @@
 </script>
 
 <script src="script.js"></script>
+  <script src="supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  const supabaseClientAuth = supabase.createClient(
+    window.BIBLIOTECA_BR_SUPABASE.url,
+    window.BIBLIOTECA_BR_SUPABASE.anonKey
+  );
+
+  async function protegerPagina() {
+    const { data, error } = await supabaseClientAuth.auth.getSession();
+
+    if (error || !data.session) {
+      window.location.replace("login.html");
+      return;
+    }
+
+    document.body.style.display = "block";
+  }
+
+  protegerPagina();
+</script>
+
+<script src="script.js"></script>
+</body>
+</html>
 <body style="display: none;">
 </html>
