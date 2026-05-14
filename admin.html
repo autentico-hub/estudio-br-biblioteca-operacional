@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin | Biblioteca Operacional BR</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="admin-page">
+    <section class="admin-card">
+      <h1>Painel Administrativo</h1>
+      <p>Biblioteca Operacional BR</p>
+
+      <button id="logoutButton">Sair</button>
+
+      <hr />
+
+      <h2>Nova orientação</h2>
+
+      <form id="orientacaoForm">
+        <label for="titulo">Título</label>
+        <input type="text" id="titulo" required />
+
+        <label for="categoria">Categoria</label>
+        <input type="text" id="categoria" required />
+
+        <label for="palavras_chave">Palavras-chave</label>
+        <input type="text" id="palavras_chave" required />
+
+        <label for="orientacao_rapida">Orientação rápida</label>
+        <textarea id="orientacao_rapida" required></textarea>
+
+        <label for="conduta_recomendada">Conduta recomendada</label>
+        <textarea id="conduta_recomendada" required></textarea>
+
+        <label for="resposta_sugerida">Resposta sugerida</label>
+        <textarea id="resposta_sugerida" required></textarea>
+
+        <button type="submit">Salvar orientação</button>
+      </form>
+
+      <p id="adminMessage"></p>
+
+      <a href="index.html">Voltar para a busca</a>
+    </section>
+  </main>
+
+  <script src="supabase-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const supabaseClient = supabase.createClient(
+      window.BIBLIOTECA_BR_SUPABASE.url,
+      window.BIBLIOTECA_BR_SUPABASE.anonKey
+    );
+
+    const adminMessage = document.getElementById("adminMessage");
+
+    async function verificarLogin() {
+      const { data } = await supabaseClient.auth.getSession();
+
+      if (!data.session) {
+        window.location.href = "login.html";
+      }
+    }
+
+    verificarLogin();
+
+    document.getElementById("logoutButton").addEventListener("click", async function () {
+      await supabaseClient.auth.signOut();
+      window.location.href = "login.html";
+    });
+
+    document.getElementById("orientacaoForm").addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      adminMessage.textContent = "Salvando...";
+
+      const novaOrientacao = {
+        titulo: document.getElementById("titulo").value,
+        categoria: document.getElementById("categoria").value,
+        palavras_chave: document.getElementById("palavras_chave").value,
+        orientacao_rapida: document.getElementById("orientacao_rapida").value,
+        conduta_recomendada: document.getElementById("conduta_recomendada").value,
+        resposta_sugerida: document.getElementById("resposta_sugerida").value
+      };
+
+      const { error } = await supabaseClient
+        .from("orientacoes")
+        .insert([novaOrientacao]);
+
+      if (error) {
+        adminMessage.textContent = "Erro ao salvar. Verifique a tabela orientacoes e as permissões.";
+        console.error(error);
+        return;
+      }
+
+      adminMessage.textContent = "Orientação salva com sucesso.";
+      document.getElementById("orientacaoForm").reset();
+    });
+  </script>
+</body>
+</html>
