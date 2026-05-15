@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Solicitar cadastro | Biblioteca Operacional BR</title>
+
+  <style>
+    :root {
+      --bg: #061726;
+      --card: #10243d;
+      --card-border: rgba(53, 214, 255, 0.18);
+      --cyan: #18b7e8;
+      --cyan-light: #35d6ff;
+      --white: #f4f7f8;
+      --text: #c9d2d8;
+      --danger: #e53935;
+      --success: #2fbf71;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: radial-gradient(circle at top, #082035 0%, #061726 45%, #020a12 100%);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .cadastro-card {
+      width: 100%;
+      max-width: 390px;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 5px;
+      padding: 38px 22px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    }
+
+    .tag {
+      color: var(--cyan-light);
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 38px;
+      line-height: 0.98;
+      letter-spacing: -1px;
+      color: var(--white);
+    }
+
+    .descricao {
+      margin: 18px 0 20px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #d7eeff;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #d7eeff;
+    }
+
+    input,
+    select {
+      width: 100%;
+      height: 34px;
+      border-radius: 5px;
+      border: 1px solid rgba(53, 214, 255, 0.18);
+      background: #061220;
+      color: var(--white);
+      padding: 0 10px;
+      font-size: 13px;
+      outline: none;
+      margin-bottom: 10px;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--cyan-light);
+      box-shadow: 0 0 0 1px var(--cyan-light);
+    }
+
+    .btn-cadastro {
+      width: 100%;
+      height: 30px;
+      border: 1px solid var(--cyan);
+      border-radius: 5px;
+      background: rgba(24, 183, 232, 0.16);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+
+    .btn-cadastro:hover {
+      background: rgba(24, 183, 232, 0.28);
+    }
+
+    .voltar {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .voltar a {
+      color: var(--cyan-light);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .voltar a:hover {
+      text-decoration: underline;
+    }
+
+    .mensagem {
+      margin-top: 12px;
+      min-height: 18px;
+      font-size: 12px;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    .mensagem.sucesso {
+      color: var(--success);
+    }
+
+    .mensagem.erro {
+      color: var(--danger);
+    }
+  </style>
+</head>
+
+<body>
+  <main class="cadastro-card">
+    <div class="tag">Acesso restrito</div>
+
+    <h1>Solicitar<br>cadastro</h1>
+
+    <p class="descricao">
+      Preencha os dados abaixo para solicitar liberação de acesso à Biblioteca Operacional BR.
+      O acesso será autorizado pela gestão do Estúdio BR Autêntico Pilates.
+    </p>
+
+    <form id="cadastroForm">
+      <label for="nome">Nome completo</label>
+      <input type="text" id="nome" name="nome" required />
+
+      <label for="email">E-mail</label>
+      <input type="email" id="email" name="email" required />
+
+      <label for="funcao">Função</label>
+      <select id="funcao" name="funcao" required>
+        <option value="">Selecione</option>
+        <option value="Instrutor(a)">Instrutor(a)</option>
+        <option value="Atendimento">Atendimento</option>
+        <option value="Gestão">Gestão</option>
+        <option value="Outro">Outro</option>
+      </select>
+
+      <button type="submit" class="btn-cadastro">Enviar solicitação</button>
+
+      <div id="mensagem" class="mensagem"></div>
+    </form>
+
+    <div class="voltar">
+      <a href="login.html">Voltar para o login</a>
+    </div>
+  </main>
+
+  <script>
+    const cadastroForm = document.getElementById("cadastroForm");
+    const mensagem = document.getElementById("mensagem");
+
+    cadastroForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const nome = document.getElementById("nome").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const funcao = document.getElementById("funcao").value;
+
+      if (!nome || !email || !funcao) {
+        mensagem.textContent = "Preencha todos os campos.";
+        mensagem.className = "mensagem erro";
+        return;
+      }
+
+      mensagem.textContent = "Solicitação enviada. Aguarde a liberação do acesso pela gestão.";
+      mensagem.className = "mensagem sucesso";
+
+      cadastroForm.reset();
+    });
+  </script>
+</body>
+</html>
