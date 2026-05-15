@@ -4,152 +4,177 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login | Biblioteca Operacional BR</title>
-  <link rel="stylesheet" href="style.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
 
   <style>
-    html,
-    body {
-      width: 100%;
-      min-height: 100%;
+    :root {
+      --bg: #061726;
+      --card: #10243d;
+      --card-border: rgba(53, 214, 255, 0.18);
+      --cyan: #18b7e8;
+      --cyan-light: #35d6ff;
+      --white: #f4f7f8;
+      --text: #c9d2d8;
+      --muted: #7f8c96;
+      --danger: #e53935;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      background: #061324;
-    }
-
-    .login-page {
       min-height: 100vh;
-      width: 100%;
-      background:
-        radial-gradient(circle at top right, rgba(24, 213, 255, 0.13), transparent 34%),
-        linear-gradient(135deg, #04101f 0%, #061324 48%, #081a2f 100%);
-      color: #f4f9ff;
+      font-family: Arial, Helvetica, sans-serif;
+      background: radial-gradient(circle at top, #082035 0%, #061726 45%, #020a12 100%);
+      color: var(--white);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 32px;
-      font-family: Arial, Helvetica, sans-serif;
+      padding: 24px;
     }
 
     .login-card {
       width: 100%;
-      max-width: 420px;
-      background: rgba(16, 36, 61, 0.72);
-      border: 1px solid rgba(255, 255, 255, 0.11);
-      border-radius: 18px;
-      padding: 40px;
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
+      max-width: 350px;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 5px;
+      padding: 42px 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
     }
 
-    .login-card h1 {
-      margin: 0 0 8px;
-      font-size: 38px;
-      line-height: 1;
-      color: #f4f9ff;
-    }
-
-    .login-card p {
-      margin: 0 0 24px;
-      color: #9db5cc;
-    }
-
-    .login-card form {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .login-card label {
-      font-size: 14px;
-      font-weight: 700;
-      color: #f4f9ff;
-    }
-
-    .login-card input {
-      width: 100%;
-      min-height: 46px;
-      padding: 0 14px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 10px;
-      color: #f4f9ff;
-      background: #07172a;
-      font-size: 15px;
-      outline: none;
-      box-sizing: border-box;
-    }
-
-    .login-card input:focus {
-      border-color: #18d5ff;
-      box-shadow: 0 0 0 4px rgba(24, 213, 255, 0.12);
-    }
-
-    .login-card input:-webkit-autofill,
-    .login-card input:-webkit-autofill:hover,
-    .login-card input:-webkit-autofill:focus {
-      -webkit-text-fill-color: #f4f9ff;
-      -webkit-box-shadow: 0 0 0px 1000px #07172a inset;
-      box-shadow: 0 0 0px 1000px #07172a inset;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-    }
-
-    .login-card button {
-      margin-top: 8px;
-      min-height: 46px;
-      padding: 0 16px;
-      border: none;
-      border-radius: 10px;
-      background: #18d5ff;
-      color: #061324;
+    .tag {
+      color: var(--cyan-light);
+      font-size: 9px;
       font-weight: 800;
-      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 46px;
+      line-height: 0.98;
+      letter-spacing: -1.5px;
+      color: var(--white);
+    }
+
+    .descricao {
+      margin: 18px 0 20px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #d7eeff;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #d7eeff;
+    }
+
+    input {
+      width: 100%;
+      height: 31px;
+      border-radius: 5px;
+      border: 1px solid rgba(53, 214, 255, 0.18);
+      background: #061220;
+      color: var(--white);
+      padding: 0 10px;
+      font-size: 13px;
+      outline: none;
+      margin-bottom: 8px;
+    }
+
+    input:focus {
+      border-color: var(--cyan-light);
+      box-shadow: 0 0 0 1px var(--cyan-light);
+    }
+
+    .btn-login {
+      width: 100%;
+      height: 26px;
+      border: 1px solid var(--cyan);
+      border-radius: 5px;
+      background: rgba(24, 183, 232, 0.16);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 800;
       cursor: pointer;
+      margin-top: 2px;
     }
 
-    .login-card button:hover {
-      filter: brightness(1.08);
+    .btn-login:hover {
+      background: rgba(24, 183, 232, 0.28);
     }
 
-    #loginMessage {
-      margin-top: 16px;
-      color: #f4f9ff;
-      min-height: 20px;
+    .cadastro-area {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text);
     }
 
-    .login-note {
-      margin-top: 24px;
-      margin-bottom: 0;
-      color: #9db5cc;
-      font-size: 14px;
-      line-height: 1.5;
+    .cadastro-area p {
+      margin: 0 0 6px;
+    }
+
+    .cadastro-area a {
+      color: var(--cyan-light);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .cadastro-area a:hover {
+      text-decoration: underline;
+    }
+
+    .mensagem {
+      margin-top: 12px;
+      min-height: 18px;
+      font-size: 12px;
+      line-height: 1.4;
+      color: var(--danger);
+      text-align: center;
     }
   </style>
 </head>
 
 <body>
-  <main class="login-page">
-    <section class="login-card">
-      <h1>Biblioteca Operacional BR</h1>
-      <p>Acesso interno</p>
+  <main class="login-card">
+    <div class="tag">Acesso protegido</div>
 
-      <form id="loginForm">
-        <label for="email">E-mail</label>
-        <input type="email" id="email" placeholder="Digite seu e-mail" required />
+    <h1>Biblioteca<br>Operacional<br>BR</h1>
 
-        <label for="password">Senha</label>
-        <input type="password" id="password" placeholder="Digite sua senha" required />
+    <p class="descricao">
+      Entre com o acesso da equipe para consultar orientações internas do Estúdio BR Autêntico Pilates.
+    </p>
 
-        <button type="submit">Entrar</button>
-      </form>
+    <form id="loginForm">
+      <label for="email">E-mail</label>
+      <input type="email" id="email" name="email" autocomplete="email" required />
 
-      <p id="loginMessage"></p>
+      <label for="senha">Senha</label>
+      <input type="password" id="senha" name="senha" autocomplete="current-password" required />
 
-      <p class="login-note">Acesso restrito à equipe do Estúdio BR Autêntico Pilates.</p>
-    </section>
+      <button type="submit" class="btn-login">Entrar</button>
+
+      <div class="cadastro-area">
+        <p>Ainda não tem acesso?</p>
+        <a href="cadastro.html">Solicitar cadastro</a>
+      </div>
+
+      <div id="mensagem" class="mensagem"></div>
+    </form>
   </main>
-
-  <script src="supabase-config.js?v=3000"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
     const supabaseClient = supabase.createClient(
@@ -158,27 +183,27 @@
     );
 
     const loginForm = document.getElementById("loginForm");
-    const loginMessage = document.getElementById("loginMessage");
+    const mensagem = document.getElementById("mensagem");
 
     loginForm.addEventListener("submit", async function (event) {
       event.preventDefault();
 
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+      mensagem.textContent = "";
 
-      loginMessage.textContent = "Entrando...";
+      const email = document.getElementById("email").value.trim();
+      const senha = document.getElementById("senha").value;
 
       const { data, error } = await supabaseClient.auth.signInWithPassword({
         email: email,
-        password: password
+        password: senha
       });
 
       if (error) {
-        loginMessage.textContent = "Não foi possível entrar. Verifique e-mail e senha.";
+        mensagem.textContent = "E-mail ou senha inválidos.";
         return;
       }
 
-      window.location.href = "admin.html";
+      window.location.href = "index.html";
     });
   </script>
 </body>
