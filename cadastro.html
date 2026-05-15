@@ -37,60 +37,60 @@
 
     .cadastro-card {
       width: 100%;
-      max-width: 390px;
+      max-width: 490px;
       background: var(--card);
       border: 1px solid var(--card-border);
       border-radius: 5px;
-      padding: 38px 22px;
+      padding: 48px 28px;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
     }
 
     .tag {
       color: var(--cyan-light);
-      font-size: 9px;
+      font-size: 11px;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
+      letter-spacing: 1px;
       margin-bottom: 8px;
     }
 
     h1 {
       margin: 0;
-      font-size: 38px;
+      font-size: 48px;
       line-height: 0.98;
-      letter-spacing: -1px;
+      letter-spacing: -1.5px;
       color: var(--white);
     }
 
     .descricao {
-      margin: 18px 0 20px;
-      font-size: 12px;
-      line-height: 1.6;
-      color: #d7eeff;
+      margin: 26px 0 26px;
+      font-size: 16px;
+      line-height: 1.55;
+      color: #f4f7f8;
     }
 
     label {
       display: block;
-      margin-bottom: 6px;
-      font-size: 9px;
+      margin-bottom: 7px;
+      font-size: 12px;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.6px;
-      color: #d7eeff;
+      letter-spacing: 0.8px;
+      color: #f4f7f8;
     }
 
     input,
     select {
       width: 100%;
-      height: 34px;
-      border-radius: 5px;
+      height: 44px;
+      border-radius: 6px;
       border: 1px solid rgba(53, 214, 255, 0.18);
       background: #061220;
       color: var(--white);
-      padding: 0 10px;
-      font-size: 13px;
+      padding: 0 14px;
+      font-size: 15px;
       outline: none;
-      margin-bottom: 10px;
+      margin-bottom: 14px;
     }
 
     input:focus,
@@ -101,12 +101,12 @@
 
     .btn-cadastro {
       width: 100%;
-      height: 30px;
+      height: 38px;
       border: 1px solid var(--cyan);
-      border-radius: 5px;
+      border-radius: 6px;
       background: rgba(24, 183, 232, 0.16);
       color: var(--white);
-      font-size: 11px;
+      font-size: 14px;
       font-weight: 800;
       cursor: pointer;
       margin-top: 4px;
@@ -116,28 +116,12 @@
       background: rgba(24, 183, 232, 0.28);
     }
 
-    .voltar {
-      margin-top: 18px;
-      text-align: center;
-      font-size: 12px;
-    }
-
-    .voltar a {
-      color: var(--cyan-light);
-      text-decoration: none;
-      font-weight: 700;
-    }
-
-    .voltar a:hover {
-      text-decoration: underline;
-    }
-
     .mensagem {
-      margin-top: 12px;
-      min-height: 18px;
-      font-size: 12px;
+      margin-top: 16px;
+      min-height: 22px;
+      font-size: 15px;
       line-height: 1.4;
-      text-align: center;
+      text-align: left;
     }
 
     .mensagem.sucesso {
@@ -146,6 +130,22 @@
 
     .mensagem.erro {
       color: var(--danger);
+    }
+
+    .voltar {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 15px;
+    }
+
+    .voltar a {
+      color: var(--cyan-light);
+      text-decoration: none;
+      font-weight: 800;
+    }
+
+    .voltar a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -187,12 +187,23 @@
     </div>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+
   <script>
+    const supabaseClient = supabase.createClient(
+      window.BIBLIOTECA_BR_SUPABASE.url,
+      window.BIBLIOTECA_BR_SUPABASE.anonKey
+    );
+
     const cadastroForm = document.getElementById("cadastroForm");
     const mensagem = document.getElementById("mensagem");
 
-    cadastroForm.addEventListener("submit", function (event) {
+    cadastroForm.addEventListener("submit", async function (event) {
       event.preventDefault();
+
+      mensagem.textContent = "";
+      mensagem.className = "mensagem";
 
       const nome = document.getElementById("nome").value.trim();
       const email = document.getElementById("email").value.trim();
@@ -200,6 +211,24 @@
 
       if (!nome || !email || !funcao) {
         mensagem.textContent = "Preencha todos os campos.";
+        mensagem.className = "mensagem erro";
+        return;
+      }
+
+      const { error } = await supabaseClient
+        .from("solicitacoes_cadastro")
+        .insert([
+          {
+            nome: nome,
+            email: email,
+            funcao: funcao,
+            status: "pendente"
+          }
+        ]);
+
+      if (error) {
+        console.error(error);
+        mensagem.textContent = "Não foi possível enviar a solicitação. Tente novamente.";
         mensagem.className = "mensagem erro";
         return;
       }
